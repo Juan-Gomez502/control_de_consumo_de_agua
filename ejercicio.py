@@ -41,16 +41,32 @@ def estado_hidratacion(consumo_ml, objetivo_ml):
         porcentaje_exceso = round(((consumo_ml - objetivo_ml) / objetivo_ml) * 100, 2)
         return f"Has excedido tu objetivo en {porcentaje_exceso}%."
 
+def cargar_persona(personas):
+    try:
+        nombre = input("Ingrese nombre de la persona: ")
+        peso = float(input("Ingrese su peso en kg: "))
+        nivel = int(input("Ingrese su nivel de actividad (1:baja ; 2:media ; 3:alta): "))
+        consumo = float(input("Ingrese la cantidad de agua consumida hoy en ml: "))
 
-def mostrar_personas(personas):
-    """Muestra todas las personas y sus datos"""
-    if not personas:
-        print("No hay personas cargadas.\n")
-        return
-    for p in personas:
-        print(f"{p['nombre']}: Peso={p['peso']} kg | Nivel={p['nivel_actividad']} "
-              f"| Consumo={p['consumo']} ml | Objetivo={p['objetivo']} ml | Estado={p['estado']}")
-    print()
+        objetivo = calcular_objetivo_ml(peso, nivel)
+        estado = estado_hidratacion(consumo, objetivo)
+
+        personas.append({
+            "nombre": nombre,
+            "peso": peso,
+            "nivel_actividad": nivel,
+            "consumo": consumo,
+            "objetivo": objetivo,
+            "estado": estado
+        })
+        print(f"Persona {nombre} cargada exitosamente.\n")
+
+    except ValueError:
+        print("Error: Debías ingresar un número válido.\n")
+    except IndexError as e:
+        print(f"Error: {e}\n")
+    except ZeroDivisionError:
+        print("Error: No se puede dividir por cero.\n")
 
 
 # MENÚ PRINCIPAL
@@ -59,7 +75,7 @@ while True:
     ===MENU===
     1 - Cargar persona
     2 - Mostrar personas cargadas y sus datos
-    6 - Salir
+    3- Salir
     ''')
     opcion = input("Ingrese una opción: ")
 
@@ -67,8 +83,8 @@ while True:
         cargar_persona(personas)
     elif opcion == "2":
         mostrar_personas(personas)
-    elif opcion == "6":
+    elif opcion == "3":
         print("¡Hasta luego!")
         break
     else:
-        print("Opción no válida. Intente de nuevo.\n")
+        print("Opción no válida. Intente de nuevo.")
