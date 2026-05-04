@@ -41,6 +41,15 @@ def estado_hidratacion(consumo_ml, objetivo_ml):
         porcentaje_exceso = round(((consumo_ml - objetivo_ml) / objetivo_ml) * 100, 2)
         return f"Has excedido tu objetivo en {porcentaje_exceso}%."
 
+def mostrar_personas(personas):
+    if not personas:
+        print("No hay personas cargadas.\n")
+        return
+    for p in personas:
+        print(f"{p['nombre']}: Peso={p['peso']} kg | Nivel={p['nivel_actividad']} "
+            f"| Consumo={p['consumo']} ml | Objetivo={p['objetivo']} ml | Estado={p['estado']}")
+    print()
+
 def cargar_persona(personas):
     try:
         nombre = input("Ingrese nombre de la persona: ")
